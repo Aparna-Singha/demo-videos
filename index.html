@@ -1,33 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Reserved Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Demo Videos</title>
+
   <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --accent: #3b82f6;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2933;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 40px 20px 10px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    header p {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .container {
+      flex: 1;
+      max-width: 900px;
+      margin: 20px auto 40px;
+      padding: 0 20px;
+      width: 100%;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-radius: 10px;
+      transition: 0.2s ease;
+      border: 1px solid transparent;
     }
-    .box {
-      padding: 30px 40px;
-      background: #ffffff;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+    .item:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .item a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .item span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .loading,
+    .empty,
+    .error {
       text-align: center;
-      font-size: 18px;
-      color: #333;
+      padding: 30px;
+      color: var(--muted);
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    noscript {
+      display: block;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #111827;
+      border: 1px solid #1f2933;
+      border-radius: 10px;
+      text-align: center;
+      color: #e5e7eb;
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    This URL is reserved for sharing demo videos.
+
+  <header>
+    <h1>Demo Videos</h1>
+    <p>This URL is reserved for sharing demo videos.</p>
+  </header>
+
+  <div class="container">
+    <div class="card" id="list">
+      <div class="loading">Loading videos...</div>
+    </div>
   </div>
+
+  <footer>
+    Powered by GitHub
+  </footer>
+
+  <noscript>
+    JavaScript is required to view the demo videos list.  
+    Please enable JavaScript in your browser.
+  </noscript>
+
+  <script>
+    const jsonUrl = "https://raw.githubusercontent.com/Aparna-Singha/demo-videos/main/data.json";
+
+    const container = document.getElementById("list");
+
+    fetch(jsonUrl)
+      .then(res => res.json())
+      .then(data => {
+        container.innerHTML = "";
+
+        if (!data || data.length === 0) {
+          container.innerHTML = '<div class="empty">No videos available.</div>';
+          return;
+        }
+
+        data.forEach(item => {
+          const div = document.createElement("div");
+          div.className = "item";
+
+          const link = document.createElement("a");
+          link.href = item.url;
+          link.target = "_blank";
+          link.textContent = item.name;
+
+          const meta = document.createElement("span");
+          meta.textContent = "Open";
+
+          div.appendChild(link);
+          div.appendChild(meta);
+
+          container.appendChild(div);
+        });
+      })
+      .catch(err => {
+        container.innerHTML = '<div class="error">Failed to load data.</div>';
+        console.error(err);
+      });
+  </script>
+
 </body>
 </html>
