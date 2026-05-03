@@ -70,6 +70,7 @@
       border-radius: 10px;
       transition: 0.2s ease;
       border: 1px solid transparent;
+      cursor: pointer;
     }
 
     .item:hover {
@@ -161,6 +162,7 @@
           link.href = item.url;
           link.target = "_blank";
           link.textContent = item.name;
+          div.onclick = () => link.click();
 
           const meta = document.createElement("span");
           meta.textContent = "Open";
