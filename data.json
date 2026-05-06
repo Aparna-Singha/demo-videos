@@ -2,5 +2,9 @@
   {
     "name": "Narrative-to-Visual Story Agent",
     "url": "/narviz"
+  },
+  {
+    "name": "AI Agent CLI Tool",
+    "url": "/AI-Agent-CLI-Tool"
   }
 ]
